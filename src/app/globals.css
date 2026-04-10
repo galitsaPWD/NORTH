@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #080808;
+  --color-surface: #111111;
+  --color-border: #222222;
+  --color-text-primary: #F0EEE8;
+  --color-text-secondary: #666666;
+  --color-accent: #E8E8FF;
+  --color-accent-dim: #3A3A5C;
+  --color-success: #1A3A2A;
+  --color-success-neon: #39FF14;
+  
+  --color-skill-technical: #1D9E75;
+  --color-skill-creative: #7F77DD;
+  --color-skill-people: #BA7517;
+  --color-skill-business: #D85A30;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #080808;
+  --foreground: #F0EEE8;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
+
+/* Star-field particle effect */
+.star-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(circle at center, #111 0%, #080808 100%);
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+/* Custom Scrollbar for all elements */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #222222 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #222222;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #666666;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
