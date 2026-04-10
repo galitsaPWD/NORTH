@@ -51,10 +51,5 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to start your career mapping session.
 
----
-
-## 🕶️ The Grit Philosophy
-NORTH ↑ is part of the **GRIT** ecosystem—software built with speed, precision, and an uncompromising focus on "The Result." No hedging, no filler, just the path.
-
-Built by [Your Name / Team Name]
+Built by [wana]
 🏁🕶️🛰️
