@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NORTH ↑
+### The Elite AI Career Assistant
 
-## Getting Started
+NORTH ↑ is a high-fidelity career deliberation engine designed to turn professional uncertainty into an official directive. Built for the modern builder, it uses a deep 8-question decision pipeline to map skills, analyze risk tolerance, and output a definitive career "Verdict."
 
-First, run the development server:
+---
 
+## 🛰️ Performance & Logic
+- **Brain**: Powered by **Groq Llama 3.3 70B** for real-time, stateful decision sessions.
+- **The Pipeline**: Orchestrates a 3-step extraction process (Onboarding -> Skill Mapping -> Comparative Decider).
+- **Thinking Engine**: Features artificial latency and streaming "Reasoning" to provide a more reflective, human-like coaching experience.
+
+## 💎 Design System: Titanium
+- **Aesthetic**: Inspired by Apple-style minimalism and high-end fintech interfaces.
+- **Stack**: Built with **Next.js 16**, **Tailwind CSS**, and **Framer Motion**.
+- **State Management**: Powered by **Zustand** for seamless persistence across the 8-question flow.
+- **Visualization**: Deep-linked **D3.js** hierarchical skill maps for path analysis.
+
+## 🏁 Sharing & Results
+- **Official Verdicts**: Professional "Dossier" cards with unique metadata verification.
+- **Minimalist Sharing**: High-speed sharing using the native browser **Web Share API**.
+- **Privacy First**: Session data is held in-memory and local storage, keeping your professional deliberations private.
+
+---
+
+## 🛠️ Setup & Installation
+
+Follow these steps to deploy your own instance of NORTH ↑:
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/north-ai-assistant.git
+cd north-ai-assistant
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment
+Create a `.env.local` file in the root directory:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Install Dependencies
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Deploy Locally
+```bash
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) to start your career mapping session.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🕶️ The Grit Philosophy
+NORTH ↑ is part of the **GRIT** ecosystem—software built with speed, precision, and an uncompromising focus on "The Result." No hedging, no filler, just the path.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built by [Your Name / Team Name]
+🏁🕶️🛰️
