@@ -65,49 +65,8 @@ export default function PathsPage() {
           throw new Error('No paths found');
         }
       } catch (err) {
-        console.warn('Path generation failed:', err);
-        const fallbackPaths = [
-          {
-            id: 'path-1',
-            name: 'Freelance AI Automation',
-            why_it_fits: 'Combines your problem-solving logic with minimal upfront design dependencies.',
-            income_min: 4000,
-            income_max: 9000,
-            income_period: 'month',
-            time_to_first_dollar: '2-3 weeks',
-            difficulty: 'easy',
-            fit_score: 96,
-            first_steps: ['Identify 3 local businesses with no CRM', 'Build a simple Make.com automation', 'Cold pitch with a demo'],
-            color: 'teal'
-          },
-          {
-            id: 'path-2',
-            name: 'Niche Community Builder',
-            why_it_fits: 'Leverages your communication skills to curate and monetize an audience.',
-            income_min: 1500,
-            income_max: 5000,
-            income_period: 'month',
-            time_to_first_dollar: '2-4 months',
-            difficulty: 'medium',
-            fit_score: 88,
-            first_steps: ['Pick a specific niche', 'Set up a free Skool group', 'Host weekly Q&A calls'],
-            color: 'purple'
-          },
-          {
-            id: 'path-3',
-            name: 'Digital Product Designer',
-            why_it_fits: 'A practical way to monetize your design skills passively.',
-            income_min: 500,
-            income_max: 3000,
-            income_period: 'month',
-            time_to_first_dollar: '1-2 weeks',
-            difficulty: 'medium',
-            fit_score: 82,
-            first_steps: ['Create a high-value Notion template', 'List it on Gumroad', 'Distribute via Twitter/X threads'],
-            color: 'amber'
-          }
-        ];
-        setPaths(fallbackPaths as any);
+        console.error('Path generation failed:', err);
+        setPaths([]);
         setPathsReady(true);
       } finally {
         setLoading(false);

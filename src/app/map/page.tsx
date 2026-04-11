@@ -12,12 +12,27 @@ const SkillMap = dynamic(() => import('@/components/SkillMap').then(mod => mod.S
   loading: () => <MapLoading />
 });
 
-const MapLoading = () => (
-  <div className="flex flex-col items-center justify-center h-full gap-4">
-    <TypingIndicator />
-    <p className="text-xs font-mono text-text-secondary uppercase tracking-widest animate-pulse">
-      Extracting Skills...
-    </p>
+const MapLoading = ({ error, onRetry }: { error?: string | null, onRetry?: () => void }) => (
+  <div className="flex flex-col items-center justify-center h-full gap-4 px-8 text-center">
+    {error ? (
+      <>
+        <div className="text-red-400 font-mono text-xs uppercase tracking-widest mb-2">Error</div>
+        <p className="text-sm text-text-secondary max-w-xs mb-4">{error}</p>
+        <button 
+          onClick={onRetry}
+          className="px-6 py-2 rounded-sm bg-surface border border-border text-xs font-bold hover:bg-white/5 transition-colors"
+        >
+          Try Again
+        </button>
+      </>
+    ) : (
+      <>
+        <TypingIndicator />
+        <p className="text-xs font-mono text-text-secondary uppercase tracking-widest animate-pulse">
+          Extracting Skills...
+        </p>
+      </>
+    )}
   </div>
 );
 
@@ -25,9 +40,11 @@ export default function MapPage() {
   const { messages, setSkills, skills } = useNorth();
   // If skills already set by processResults — skip extraction, no double loading
   const [loading, setLoading] = useState(skills.length === 0 && messages.length > 0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function extract() {
+      setError(null);
       // Skills already set by ChatScreen's processResults — skip
       if (skills.length > 0) return;
 
@@ -53,13 +70,8 @@ export default function MapPage() {
           throw new Error('No skills in response');
         }
       } catch (err) {
-        console.warn('Extraction failed:', err);
-        setSkills([
-          { name: "Frontend Development", category: "technical", strength: 8, evidence: "I like coding UIs" },
-          { name: "Problem Solving", category: "business", strength: 9, evidence: "I debug things fast" },
-          { name: "Design", category: "creative", strength: 6, evidence: "I dabble in Figma" },
-          { name: "Communication", category: "people", strength: 7, evidence: "I manage client expectations well" }
-        ]);
+        console.error('Extraction failed:', err);
+        setError('Extraction failed. Check your GROQ_API_KEY on Vercel.');
       } finally {
         setLoading(false);
       }
@@ -76,7 +88,7 @@ export default function MapPage() {
       className="h-full"
     >
       <AnimatePresence mode="wait">
-        {loading ? (
+        {loading || error ? (
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
@@ -84,7 +96,7 @@ export default function MapPage() {
             exit={{ opacity: 0 }}
             className="h-full"
           >
-            <MapLoading />
+            <MapLoading error={error} onRetry={() => window.location.reload()} />
           </motion.div>
         ) : (
           <motion.div

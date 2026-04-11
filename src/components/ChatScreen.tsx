@@ -87,6 +87,9 @@ export const ChatScreen = () => {
       // Transition to map
       setOnboardingComplete(true);
       router.push('/map');
+      
+      // Wait a split second to ensure transition starts before clearing overlay
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
       console.error('Error processing results:', error);
       // Fallback transition even if AI fails

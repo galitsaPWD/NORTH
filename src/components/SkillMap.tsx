@@ -59,6 +59,16 @@ export const SkillMap = () => {
       business: 'Business',
     };
 
+    // Robust Category Mapping
+    const getSafeCategory = (cat: string): SkillCategory => {
+      const c = cat.toLowerCase();
+      if (c.includes('tech')) return 'technical';
+      if (c.includes('creat')) return 'creative';
+      if (c.includes('peop') || c.includes('commun')) return 'people';
+      if (c.includes('bus') || c.includes('mark') || c.includes('sale')) return 'business';
+      return 'technical'; // Default fallback
+    };
+
     // Tier 1: Center node
     const nodes: Node[] = [
       { id: 'center', name: 'You', category: 'center', radius: 30, color: CATEGORY_COLORS.center },
@@ -67,14 +77,15 @@ export const SkillMap = () => {
 
     // Tier 2: Category hub nodes -> Tier 3: Skill leaf nodes
     Object.entries(grouped).forEach(([cat, catSkills]) => {
+      const safeCat = getSafeCategory(cat);
       const hubId = `cat-${cat}`;
 
       nodes.push({
         id: hubId,
-        name: categoryNames[cat] || cat,
-        category: cat as SkillCategory,
+        name: categoryNames[safeCat] || cat,
+        category: safeCat,
         radius: 18,
-        color: CATEGORY_COLORS[cat as SkillCategory],
+        color: CATEGORY_COLORS[safeCat] || CATEGORY_COLORS.technical,
       });
 
       // Hub links to center
@@ -83,14 +94,15 @@ export const SkillMap = () => {
       // Leaf skill nodes link to their hub
       catSkills.forEach((s, i) => {
         const leafId = `skill-${cat}-${i}`;
+        const strength = typeof s.strength === 'number' ? s.strength : 5;
         nodes.push({
           id: leafId,
-          name: s.name,
-          category: cat as SkillCategory,
-          radius: 10 + (s.strength / 10) * 8,
-          color: CATEGORY_COLORS[cat as SkillCategory],
-          evidence: s.evidence,
-          strength: s.strength,
+          name: s.name || 'Skill',
+          category: safeCat,
+          radius: 10 + (Math.min(10, Math.max(1, strength)) / 10) * 8,
+          color: CATEGORY_COLORS[safeCat] || CATEGORY_COLORS.technical,
+          evidence: s.evidence || 'Demonstrated in conversation',
+          strength: strength,
         });
         links.push({ source: hubId, target: leafId });
       });
