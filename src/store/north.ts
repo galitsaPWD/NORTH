@@ -42,6 +42,13 @@ export const useNorth = create<NorthState & NorthActions>()(
     {
       name: 'north-storage',
       storage: createJSONStorage(() => localStorage),
+      // Only persist the conversation messages — never cache computed results.
+      // Skills/paths are always freshly computed from messages to prevent stale data.
+      partialize: (state) => ({
+        messages: state.messages,
+        questionIndex: state.questionIndex,
+        onboardingComplete: state.onboardingComplete,
+      }),
     }
   )
 );
