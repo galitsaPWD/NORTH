@@ -30,15 +30,20 @@ const PathsLoading = () => (
 
 export default function PathsPage() {
   const router = useRouter();
-  const { messages, skills, paths, pathsReady, setPaths, setPathsReady } = useNorth();
-  const [loading, setLoading] = useState(!pathsReady);
+  const { messages, skills, paths, setPaths, setPathsReady } = useNorth();
+  // Always regenerate on mount — never trust stale localStorage paths
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function generate() {
-      if (pathsReady && paths.length > 0) {
+      if (messages.length === 0) {
         setLoading(false);
         return;
       }
+
+      // Clear stale paths so we always fetch fresh ones
+      setPaths([]);
+      setPathsReady(false);
       
       try {
         const res = await fetch('/api/paths', {
@@ -47,12 +52,10 @@ export default function PathsPage() {
           body: JSON.stringify({ messages, skills }),
         });
         
-        if (!res.ok) {
-          throw new Error('API request failed');
-        }
+        if (!res.ok) throw new Error('API request failed');
 
         const data = await res.json();
-        if (data.paths) {
+        if (data.paths && data.paths.length > 0) {
           const sorted = [...data.paths].sort((a: any, b: any) => b.fit_score - a.fit_score);
           setPaths(sorted);
           setPathsReady(true);
@@ -60,8 +63,7 @@ export default function PathsPage() {
           throw new Error('No paths found');
         }
       } catch (err) {
-        console.warn('Generation error (using fallback data due to missing API key):', err);
-        // Fallback data when API key is missing
+        console.warn('Path generation failed:', err);
         const fallbackPaths = [
           {
             id: 'path-1',
@@ -103,9 +105,7 @@ export default function PathsPage() {
             color: 'amber'
           }
         ];
-        
-        const sorted = fallbackPaths.sort((a: any, b: any) => b.fit_score - a.fit_score);
-        setPaths(sorted as any);
+        setPaths(fallbackPaths as any);
         setPathsReady(true);
       } finally {
         setLoading(false);

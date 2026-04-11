@@ -23,11 +23,20 @@ const MapLoading = () => (
 
 export default function MapPage() {
   const { messages, setSkills, skills } = useNorth();
-  const [loading, setLoading] = useState(skills.length === 0);
+  // Always re-extract on mount — never trust stale localStorage skills
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function extract() {
-      if (skills.length > 0) return;
+      if (messages.length === 0) {
+        // No session messages at all — nothing to extract
+        setLoading(false);
+        return;
+      }
+
+      // Always re-extract from the live session messages
+      // so localStorage cache never shows stale/fallback data
+      setSkills([]);
       
       try {
         const res = await fetch('/api/extract', {
@@ -36,19 +45,17 @@ export default function MapPage() {
           body: JSON.stringify({ messages }),
         });
         
-        if (!res.ok) {
-          throw new Error('API request failed');
-        }
+        if (!res.ok) throw new Error('API request failed');
 
         const data = await res.json();
-        if (data.skills) {
+        if (data.skills && data.skills.length > 0) {
           setSkills(data.skills);
         } else {
-          throw new Error('No skills found');
+          throw new Error('No skills in response');
         }
       } catch (err) {
-        console.warn('Extraction error (using fallback data due to missing API key):', err);
-        // Fallback data when API key is missing
+        console.warn('Extraction failed:', err);
+        // Only use fallback if we genuinely have no messages (dev mode)
         setSkills([
           { name: "Frontend Development", category: "technical", strength: 8, evidence: "I like coding UIs" },
           { name: "Problem Solving", category: "business", strength: 9, evidence: "I debug things fast" },
@@ -61,7 +68,8 @@ export default function MapPage() {
     }
 
     extract();
-  }, [messages, skills]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <motion.main 
