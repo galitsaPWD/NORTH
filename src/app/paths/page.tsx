@@ -30,21 +30,23 @@ const PathsLoading = () => (
 
 export default function PathsPage() {
   const router = useRouter();
-  const { messages, skills, paths, setPaths, setPathsReady } = useNorth();
-  // Always regenerate on mount — never trust stale localStorage paths
-  const [loading, setLoading] = useState(true);
+  const { messages, skills, paths, pathsReady, setPaths, setPathsReady } = useNorth();
+  // If paths already set by processResults — skip generation, no double loading
+  const [loading, setLoading] = useState(!pathsReady || paths.length === 0);
 
   useEffect(() => {
     async function generate() {
-      if (messages.length === 0) {
+      // Paths already set by ChatScreen's processResults — skip
+      if (pathsReady && paths.length > 0) {
         setLoading(false);
         return;
       }
 
-      // Clear stale paths so we always fetch fresh ones
-      setPaths([]);
-      setPathsReady(false);
-      
+      // No messages = no session
+      if (messages.length === 0) {
+        setLoading(false);
+        return;
+      }
       try {
         const res = await fetch('/api/paths', {
           method: 'POST',

@@ -195,7 +195,7 @@ export const ChatScreen = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-[420px] mx-auto bg-background relative overflow-hidden ring-1 ring-border shadow-2xl">
+    <div className="flex flex-col h-[100dvh] max-w-[420px] mx-auto bg-background relative overflow-hidden ring-1 ring-border shadow-2xl">
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-border bg-background/80 backdrop-blur-md z-10 shrink-0">
         <button 

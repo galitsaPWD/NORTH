@@ -2,13 +2,22 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { StarField } from '@/components/StarField';
 import { ArrowUp } from 'lucide-react';
+import { useNorth } from '@/store/north';
 
 export default function LandingPage() {
+  const router = useRouter();
+  const { reset } = useNorth();
+
+  const handleStart = () => {
+    reset(); // Wipe stale localStorage before new session
+    router.push('/start');
+  };
+
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center p-6 text-center">
+    <main className="relative min-h-[100dvh] flex flex-col items-center justify-center p-6 text-center overflow-hidden">
       <StarField />
       
       <div className="max-w-md w-full flex flex-col items-center gap-12">
@@ -33,7 +42,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
             className="text-lg md:text-xl font-mono text-text-secondary"
           >
-            "Find your direction."
+            &quot;Find your direction.&quot;
           </motion.p>
           
           <motion.p
@@ -42,7 +51,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
             className="text-sm md:text-base text-text-secondary/80 max-w-[280px] mx-auto"
           >
-            Tell us about yourself. We'll show you where to go.
+            Tell us about yourself. We&apos;ll show you where to go.
           </motion.p>
         </div>
 
@@ -53,7 +62,10 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
           className="w-full mt-8"
         >
-          <Link href="/start" className="group relative inline-flex w-full items-center justify-center rounded-sm bg-accent px-8 py-4 text-sm font-bold text-background transition-all hover:bg-white active:scale-[0.98]">
+          <button
+            onClick={handleStart}
+            className="group relative inline-flex w-full items-center justify-center rounded-sm bg-accent px-8 py-4 text-sm font-bold text-background transition-all hover:bg-white active:scale-[0.98]"
+          >
             Find my path
             <motion.span
               className="ml-2 inline-block"
@@ -62,7 +74,7 @@ export default function LandingPage() {
             >
               →
             </motion.span>
-          </Link>
+          </button>
         </motion.div>
       </div>
 
